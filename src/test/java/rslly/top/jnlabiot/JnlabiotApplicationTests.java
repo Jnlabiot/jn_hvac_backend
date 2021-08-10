@@ -17,6 +17,8 @@ class JnlabiotApplicationTests {
         map.put("token", 1234);
         var s=JWTUtils.createJWT(map,"{\"user\":\"cwl\"}",1000*60*60*12);
         System.out.println(s);
+
     }
+
 
 }

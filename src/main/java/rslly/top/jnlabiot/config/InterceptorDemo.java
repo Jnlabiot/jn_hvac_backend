@@ -2,20 +2,30 @@ package rslly.top.jnlabiot.config;
 
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import rslly.top.jnlabiot.model.AiruserEntity;
+import rslly.top.jnlabiot.service.AiruserServiceImpl;
 import rslly.top.jnlabiot.utility.JWTUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 /**
  * 未携带token一个40，token过期一个44
  */
+
 public class InterceptorDemo implements HandlerInterceptor {
+
+    @Autowired
+    AiruserServiceImpl airuserService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String authHeader = request.getHeader("Authorization");
@@ -36,8 +46,10 @@ public class InterceptorDemo implements HandlerInterceptor {
             System.out.println(authHeader.substring(7,authHeader.length()));
             try {
                 Claims map = JWTUtils.parseJWT(authHeader.substring(7,authHeader.length()));
-                Object obj=map.get("username");
-                if (!obj.equals("jnlab"))throw new Exception("token无效");
+                //Object obj=map.get("username");
+                List<AiruserEntity> l1=airuserService.findByUsername((String) map.get("username"));
+                System.out.println((String) map.get("username"));
+                if (l1.isEmpty())throw new Exception("token无效");
 
             }catch  (Exception e){
                 e.printStackTrace();

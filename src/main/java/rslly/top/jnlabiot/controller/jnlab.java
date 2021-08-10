@@ -59,13 +59,13 @@ public class jnlab {
         }
 
     }
-    @guest("123")
+    @guest("/addNewTool")
     @RequestMapping(value = "/addNewTool", method = RequestMethod.POST)
     public model addNewTool(@RequestBody AddNewTool addNewTool) {
        return tool.addNewTool(addNewTool);
     }
 
-    @guest("12323fif")
+    @guest("/forbiddenTool")
     @RequestMapping(value = "/forbiddenTool", method = RequestMethod.GET)
     public model forbiddenTool(@Param("hardwareid") Integer hardwareid, @Param("status") Boolean status) {
         return tool.forbiddenTool(hardwareid,status);
